@@ -8,7 +8,7 @@ init_db()
 
 @app.route("/")
 def home():
-    return jsonify({"message": "Logistics API running"})
+    return jsonify({"message": "Logistics API running", "test_text": "Test text"})
 
 if __name__ == "__main__":
     app.run(debug=True)
