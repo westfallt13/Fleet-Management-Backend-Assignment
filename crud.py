@@ -6,9 +6,9 @@ from database import get_db_connection
 def row_to_dict(row):
     return dict(row) if row else None
 
-    #--Driver Crud--
-    
-    def create_driver(name, license_type, vehicle_id=None):
+# --Driver Crud--
+
+def create_driver(name, license_type, vehicle_id=None):
     conn = get_db_connection()
     cur = conn.cursor()
     cur.execute(
@@ -20,6 +20,7 @@ def row_to_dict(row):
     row = cur.execute("SELECT * FROM Driver WHERE DriverID = ?", (driver_id,)).fetchone()
     conn.close()
     return row_to_dict(row)
+
 
 
 def get_all_drivers():
