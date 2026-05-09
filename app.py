@@ -11,7 +11,7 @@ init_db()
 
 # --- API Routes ---
 
-@app.route("/drivers", methods=["GET", "POST"])
+@app.route("/api/drivers", methods=["GET", "POST"])
 def manage_drivers():
     if request.method == "POST":
         data = request.json
@@ -19,7 +19,17 @@ def manage_drivers():
         return jsonify(new_driver), 201
     return jsonify(crud.get_all_drivers())
 
-@app.route("/vehicles", methods=["GET", "POST"])
+@app.route("/api/drivers/<int:idx>", methods=["PUT", "DELETE"])
+def edit_drivers(idx):
+    if request.method == "PUT":
+        data = request.json
+        updated = crud.update_driver(idx, data.get("Name"), data.get("LicenseType"), data.get("VehicleID"))
+        return jsonify(updated)
+    elif request.method == "DELETE":
+        crud.delete_driver(idx)
+        return "", 204
+
+@app.route("/api/vehicles", methods=["GET", "POST"])
 def manage_vehicles():
     if request.method == "POST":
         data = request.json
@@ -27,7 +37,17 @@ def manage_vehicles():
         return jsonify(new_vehicle), 201
     return jsonify(crud.get_all_vehicles())
 
-@app.route("/routes", methods=["GET", "POST"])
+@app.route("/api/vehicles/<int:idx>", methods=["PUT", "DELETE"])
+def edit_vehicles(idx):
+    if request.method == "PUT":
+        data = request.json
+        updated = crud.update_vehicle(idx, data.get("LicensePlate"), data.get("Model"))
+        return jsonify(updated)
+    elif request.method == "DELETE":
+        crud.delete_vehicle(idx)
+        return "", 204
+
+@app.route("/api/routes", methods=["GET", "POST"])
 def manage_routes():
     if request.method == "POST":
         data = request.json
@@ -35,7 +55,7 @@ def manage_routes():
         return jsonify(new_route), 201
     return jsonify(crud.get_all_routes())
 
-@app.route("/packages", methods=["GET", "POST"])
+@app.route("/api/packages", methods=["GET", "POST"])
 def manage_packages():
     if request.method == "POST":
         data = request.json

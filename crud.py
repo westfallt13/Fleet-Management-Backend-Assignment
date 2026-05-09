@@ -103,6 +103,31 @@ def get_vehicle_by_id(vehicle_id):  # ID focused fetching
     return row_to_dict(row)  # Serialized view
 
 
+def update_vehicle(vehicle_id, license_plate=None, model=None):
+    fields = []
+    params = []
+
+    if license_plate is not None:
+        fields.append("LicensePlate = ?")
+        params.append(license_plate)
+    if model is not None:
+        fields.append("Model = ?")
+        params.append(model)
+
+    if not fields:
+        return get_vehicle_by_id(vehicle_id)
+
+    params.append(vehicle_id)
+
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute(f"UPDATE Vehicle SET {', '.join(fields)} WHERE VehicleID = ?", params)
+    conn.commit()
+    row = cur.execute("SELECT * FROM Vehicle WHERE VehicleID = ?", (vehicle_id,)).fetchone()
+    conn.close()
+    return row_to_dict(row)
+
+
 def delete_vehicle(vehicle_id):  # Targeted object removal
     conn = get_db_connection()  # Prep DB environment
     cur = conn.cursor()  # Action module 
