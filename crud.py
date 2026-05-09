@@ -144,6 +144,12 @@ def create_package(description, weight, route_id=None):  # Appends a package tar
     conn.close()  # Terminate bridge instance
     return row_to_dict(row)  # Formatting element list 
 
+def get_all_packages():  # Get all packages
+    conn = get_db_connection()
+    rows = conn.execute("SELECT * FROM Package").fetchall()
+    conn.close()
+    return [row_to_dict(r) for r in rows]
+
 #--DriverRoute Crud--
 
 def create_driver_route(driver_id, route_id, date):  # Mapping function between driver & Route schedule 
